@@ -254,3 +254,19 @@ function initEventListeners() {
         if (slider) slider.textContent = 100;
     }
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    const client = mqtt.connect('wss://x9112e1f.ala.asia-southeast1.emqxsl.com', {
+        username: 'camtrol',
+        password: 'gustnr99**'
+    });
+
+    client.on('connect', () => {
+        client.subscribe('device/esp32/data');
+    });
+
+    client.on('message', (topic, payload) => {
+        console.log('Received:', payload.toString());
+        document.getElementById('sensor-data').innerText = payload.toString();
+    });
+});
