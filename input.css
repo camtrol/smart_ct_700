@@ -1,0 +1,62 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.indicator-bg {
+    /* width: 100%; */
+    background-color: #808080ff; /* 기본 백색 → 원하는 색으로 변경 */
+    /* position: relative;
+  overflow: hidden; */
+}
+
+.btn {
+    width: 80px;
+    min-height: 35px;
+    flex: 1;
+    margin: 0.5rem;
+    padding: 0.75rem;
+    border-radius: 10px;
+    background: #222435;
+    color: #9a9a9aff;
+    box-shadow: inset -5px -5px 10px #0e0f16, inset 5px 5px 10px #363954;
+    border: none;
+    /* font-size: 1rem; */
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn.toggled {
+    width: 80px;
+    border-radius: 10px;
+    background: linear-gradient(315deg, #1f2030, #242739);
+    box-shadow: -5px -5px 10px #0e0f16, 5px 5px 10px #363954;
+    color: #0ff; /* 네온 컬러: 예시로 시안 계열 */
+    text-shadow: 0 0 5px #0ff, 0 0 10px #0ff, 0 0 20px #0ff;
+    /* text-shadow: 0 0 3px #0ff, 0 0 7px #0ff, 0 0 10px #0ff; */
+}
+
+.my-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    background: transparent;
+    padding-inline-start: 60px;
+    padding-inline-end: 100px;
+}
+
+.my-slider::-webkit-slider-runnable-track {
+    height: 6px;
+    background: #0077cc;
+    border-radius: 3px;
+}
+
+.my-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: #cececeff;
+    margin-top: -7px;
+    cursor: pointer;
+}
