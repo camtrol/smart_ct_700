@@ -9,6 +9,7 @@ const mqttClient = mqtt.connect('wss://x9112e1f.ala.asia-southeast1.emqxsl.com:8
   password: 'gustnr99**',
   clientId: 'web-' + Math.random().toString(16).substr(2, 8)
 });
+console.log("🔌 MQTT 클라이언트 설정 완료:", mqttClient.options);
 
 mqttClient.on('connect', () => {
   console.log('MQTT Connected!'); // 이 로그가 안 뜨면 연결 실패
