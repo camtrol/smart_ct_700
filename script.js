@@ -3,13 +3,22 @@ console.log("script.js 로드 완료!"); // 🔥 여기서 출력
 // const gateway = `ws://${window.location.hostname}/ws`;
 // let websocket = null; // 웹소켓 초기화 변수
 
-// [추가] MQTT 클라이언트 초기화 (최상단에 배치)
-const mqttClient = mqtt.connect('wss://x9112e1f.ala.asia-southeast1.emqxsl.com:8084/mqtt', {
-  username: 'camtrol',
-  password: 'gustnr99**',
-  clientId: 'web-' + Math.random().toString(16).substr(2, 8)
-});
-console.log("🔌 MQTT 클라이언트 설정 완료:", mqttClient.options);
+try {
+  // MQTT 객체 존재 여부 확인
+  if (typeof mqtt === 'undefined') {
+    throw new Error("MQTT 라이브러리 로드 실패!");
+  }
+
+  const mqttClient = mqtt.connect('wss://x9112e1f.ala.asia-southeast1.emqxsl.com:8084/mqtt', {
+    username: 'camtrol',
+    password: 'gustnr99**',
+    clientId: 'web-' + Math.random().toString(16).substr(2, 8)
+  });
+
+  console.log("🔌 MQTT 클라이언트 설정 완료:", mqttClient.options);
+} catch (err) {
+  console.error("❌ 초기화 실패:", err);
+}
 
 mqttClient.on('connect', () => {
   console.log('MQTT Connected!'); // 이 로그가 안 뜨면 연결 실패
