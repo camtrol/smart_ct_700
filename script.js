@@ -1,7 +1,26 @@
 console.log("script.js 로드 완료!"); // 🔥 여기서 출력
 
-const gateway = `ws://${window.location.hostname}/ws`;
-let websocket = null; // 웹소켓 초기화 변수
+// const gateway = `ws://${window.location.hostname}/ws`;
+// let websocket = null; // 웹소켓 초기화 변수
+
+// [추가] MQTT 클라이언트 초기화 (최상단에 배치)
+const mqttClient = mqtt.connect('wss://x9112e1f.ala.asia-southeast1.emqxsl.com:8084/mqtt', {
+  username: 'camtrol',
+  password: 'gustnr99**',
+  clientId: 'web-' + Math.random().toString(16).substr(2, 8)
+});
+
+// [추가] MQTT 메시지 처리
+mqttClient.on('message', (topic, payload) => {
+  try {
+    const data = JSON.parse(payload.toString());
+    console.log('수신 데이터:', data);
+    // updateSensorUI(data); // 센서 데이터 업데이트 함수 호출
+  } catch (err) {
+    console.error('데이터 파싱 오류:', err);
+  }
+});
+
 let reconnectAttempts = 0;
 
 let bedFlag = false;
