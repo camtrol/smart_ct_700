@@ -12,7 +12,7 @@ const mqttClient = mqtt.connect('wss://x9112e1f.ala.asia-southeast1.emqxsl.com:8
 
 mqttClient.on('connect', () => {
   console.log('MQTT Connected!'); // 이 로그가 안 뜨면 연결 실패
-  mqttClient.subscribe('smartCT700/+/sensor');
+  mqttClient.subscribe('스마트-V1.0-MH-001');
 });
 
 mqttClient.on('error', (err) => {
