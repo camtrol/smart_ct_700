@@ -4,7 +4,7 @@ console.log("script.js 로드 완료!"); // 🔥 여기서 출력
 // let websocket = null; // 웹소켓 초기화 변수
 
 // [추가] MQTT 클라이언트 초기화 (최상단에 배치)
-const mqttClient = mqtt.connect('wss://x9112e1f.ala.asia-southeast1.emqxsl.com:8883/mqtt', {
+const mqttClient = mqtt.connect('wss://x9112e1f.ala.asia-southeast1.emqxsl.com:8084/mqtt', {
   username: 'camtrol',
   password: 'gustnr99**',
   clientId: 'web-' + Math.random().toString(16).substr(2, 8)
