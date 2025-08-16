@@ -3,6 +3,11 @@ console.log("script.js 로드 완료!"); // 🔥 여기서 출력
 // const gateway = `ws://${window.location.hostname}/ws`;
 // let websocket = null; // 웹소켓 초기화 변수
 
+console.log("MQTT 라이브러리 상태:", typeof mqtt); // "function" 출력 확인
+if (typeof mqtt === 'undefined') {
+  alert("MQTT 라이브러리 로드 실패! 콘솔을 확인하세요.");
+}
+
 try {
   // MQTT 객체 존재 여부 확인
   if (typeof mqtt === 'undefined') {
