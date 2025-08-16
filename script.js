@@ -1,4 +1,5 @@
-console.log("script.js 로드 완료!"); // 🔥 여기서 출력
+console.log("1 script.js 로드 완료!"); // 🔥 여기서 출력
+console.log("2 script.js 로드 완료!"); // 🔥 여기서 출력
 
 // const gateway = `ws://${window.location.hostname}/ws`;
 // let websocket = null; // 웹소켓 초기화 변수
