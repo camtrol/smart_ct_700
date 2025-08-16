@@ -10,15 +10,13 @@ const mqttClient = mqtt.connect('wss://x9112e1f.ala.asia-southeast1.emqxsl.com:8
   clientId: 'web-' + Math.random().toString(16).substr(2, 8)
 });
 
-// [추가] MQTT 메시지 처리
-mqttClient.on('message', (topic, payload) => {
-  try {
-    const data = JSON.parse(payload.toString());
-    console.log('수신 데이터:', data);
-    // updateSensorUI(data); // 센서 데이터 업데이트 함수 호출
-  } catch (err) {
-    console.error('데이터 파싱 오류:', err);
-  }
+mqttClient.on('connect', () => {
+  console.log('MQTT Connected!'); // 이 로그가 안 뜨면 연결 실패
+  mqttClient.subscribe('smartCT700/+/sensor');
+});
+
+mqttClient.on('error', (err) => {
+  console.error('MQTT Error:', err); // 오류 발생 시 출력
 });
 
 let reconnectAttempts = 0;
