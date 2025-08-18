@@ -1,4 +1,4 @@
-console.log("script.js 스마트 로드 완료!"); // 🔥 여기서 출력
+console.log("3. script.js 스마트 로드 완료!"); // 🔥 여기서 출력
 
 const gateway = `ws://${window.location.hostname}/ws`;
 let websocket = null; // 웹소켓 초기화 변수
