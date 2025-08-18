@@ -5,8 +5,10 @@ cd "E:\CamTrol_III\CamTrol\1. CT-700\CT-700_HTML"
 
 :: ==========================================
 :: 2. 자동 버전 처리 (쿼리스트링)
-:: 간단히 시간을 버전으로 사용
-set version=%date:~0,4%%date:~5,2%%date:~8,2%_%time:~0,2%%time:~3,2%%time:~6,2%
+:: 날짜+시간 버전 생성 (공백 제거)
+set hh=%time:~0,2%
+if "%hh:~0,1%"==" " set hh=0%hh:~1,1%
+set version=%date:~0,4%%date:~5,2%%date:~8,2%_%hh%%time:~3,2%%time:~6,2%
 
 :: index.html 내 script.js / style.css 링크 수정
 :: (PowerShell 이용, 실제 파일 경로와 이름 맞춰서 사용)
