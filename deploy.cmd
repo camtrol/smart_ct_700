@@ -29,7 +29,7 @@ git commit -m "Deploy updates with version %version%"
 
 :: ==========================================
 :: 6. GitHub에 Push
-git push -u origin main
+git push -u -f origin main
 
 :: ==========================================
 echo Deployment complete!
