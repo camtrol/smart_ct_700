@@ -11,7 +11,7 @@ if "%hh:~0,1%"==" " set hh=0%hh:~1,1%
 set version=%date:~0,4%%date:~5,2%%date:~8,2%_%hh%%time:~3,2%%time:~6,2%
 
 :: index.html 내 script.js / style.css 링크 수정
-:: (PowerShell 이용, 실제 파일 경로와 이름 맞춰서 사용)
+:: index.html 내 script.js / style.css 링크 수정 (공백 없이)
 powershell -Command "(Get-Content index.html) -replace 'script\.js(\?v=[0-9_]+)?', 'script.js?v=%version%' | Set-Content index.html"
 powershell -Command "(Get-Content index.html) -replace 'style\.css(\?v=[0-9_]+)?', 'style.css?v=%version%' | Set-Content index.html"
 
