@@ -1,4 +1,4 @@
-console.log("script.js 로드 완료!"); // 🔥 여기서 출력
+console.log("script.js 스마트 로드 완료!"); // 🔥 여기서 출력
 
 const gateway = `ws://${window.location.hostname}/ws`;
 let websocket = null; // 웹소켓 초기화 변수
@@ -45,12 +45,12 @@ function initWebSocket() {
     websocket.onopen = () => {
         console.log("WebSocket Connected!");
         reconnectAttempts = 0;
-        updateUI(true); // 연결 상태 UI 업데이트
+        // updateUI(true); // 연결 상태 UI 업데이트
     };
 
     websocket.onerror = (e) => {
         console.error("WebSocket Error:", e);
-        updateUI(false);
+        // updateUI(false);
     };
 
     websocket.onclose = () => {
@@ -114,7 +114,6 @@ function onClose(event) {
     console.log("Connection closed");
     setTimeout(initWebSocket, 2000);
 }
-
 
 function setupSliders(count) {
     for (let i = 1; i <= count; i++) {
