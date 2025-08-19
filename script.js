@@ -20,7 +20,7 @@ client.on("message", (topic, message) => {
     try {
         const data = JSON.parse(message.toString());
         const batteryEl = document.querySelector("#battery_display span");
-        if (batteryEl) batteryEl.textContent = data.voltage.toFixed(2) + "V";
+        if (batteryEl) batteryEl.textContent = data.voltage.toFixed(1) + "V";
         console.log("voltage:", data.voltage, "temperature:", data.temperature, "humidity:", data.humidity);
     } catch (e) {
         console.error("JSON parse error", e);
