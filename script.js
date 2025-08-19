@@ -26,6 +26,12 @@ client.on("message", (topic, message) => {
         const tempEl = document.getElementById("nowTemp");
         if (tempEl) tempEl.textContent = data.temperature.toFixed(1) + "°C";
 
+        const humiEl = document.getElementById("humidity");
+        if (humiEl) humiEl.textContent = data.humidity.toFixed(1) + "%";
+
+        const cleanValEl = document.getElementById("cleanVal");
+        if (cleanValEl) cleanValEl.textContent = data.cleanWater;
+
         console.log("voltage:", data.voltage, "temperature:", data.temperature, "humidity:", data.humidity);
     } catch (e) {
         console.error("JSON parse error", e);

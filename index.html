@@ -6,9 +6,9 @@
         <title>CamTrol</title>
         <script src="https://cdn.tailwindcss.com"></script>
         <link
-            href="./style.css?v=20250819_103939"
+            href="./style.css?v=20250819_104615"
             rel="stylesheet"
-            onerror="this.href='./style.css?v=20250819_103939'"
+            onerror="this.href='./style.css?v=20250819_104615'"
         />
         <!-- 빈 favicon 추가 (옵션) -->
         <link rel="icon" href="data:," />
@@ -66,7 +66,7 @@
             </div>
             <div id="humi_display" class="inline-flex flex-col items-center cursor-pointer">
                 <img src="Humi.png" alt="습도" class="object-contain mb-1" width="50" height="20" />
-                <span class="text-lg text-white">52.6 %</span>
+                <span id="humidity" class="text-lg text-white">52.6 %</span>
             </div>
             <div class="flex flex-col items-center">
                 <!-- 수직 인디케이터 바 -->
@@ -82,7 +82,7 @@
                     ></div>
                     <!-- 중앙 고정 퍼센트 라벨 -->
                     <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
-                        <span class="text-xs text-black">100%</span>
+                        <span id="cleanVal" class="text-xs text-black">100%</span>
                     </div>
                 </div>
                 <!-- 아래 텍스트 레이블 -->
@@ -304,9 +304,11 @@
                 </div>
             </div>
         </div>
-        <script src="./script.js?v=20250819_103939?ver=1"></script>
+        <script src="./script.js?v=20250819_104615?ver=1"></script>
     </body>
 </html>
+
+
 
 
 
