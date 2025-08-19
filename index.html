@@ -6,23 +6,15 @@
         <title>CamTrol</title>
         <!-- <script src="https://cdn.tailwindcss.com"></script> -->
         <link
-            href="./style.css?v=20250819_175926"
+            href="./style.css?v=20250819_184546"
             rel="stylesheet"
-            onerror="this.href='./style.css?v=20250819_175926'"
+            onerror="this.href='./style.css?v=20250819_184546'"
         />
         <link rel="manifest" href="/manifest.json" />
         <!-- 빈 favicon 추가 (옵션) -->
         <link rel="icon" href="data:," />
         <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
-        <script src="./script.js?v=20250819_175926?ver=1"></script>
-        <script>
-            const id = sessionStorage.getItem("userId");
-            const pw = sessionStorage.getItem("userPw");
-
-            if (!id || !pw) {
-                window.location.href = "login.html";
-            }
-        </script>
+        <script src="./script.js?v=20250819_184546?ver=1"></script>
     </head>
 
     <body class="min-h-screen font-sans bg-gray-800">
@@ -316,7 +308,7 @@
                 </div>
             </div>
         </div>
-        <!-- <script src="./script.js?v=20250819_175926?ver=1"></script> -->
+        <!-- <script src="./script.js?v=20250819_184546?ver=1"></script> -->
         <script>
             if ("serviceWorker" in navigator) {
                 navigator.serviceWorker
@@ -325,23 +317,20 @@
                     .catch((err) => console.log("Service Worker 등록 실패:", err));
             }
 
-            // // localStorage에서 ID/PW 확인
-            // const id = localStorage.getItem("userId");
-            // const pw = localStorage.getItem("userPw");
+            const params = new URLSearchParams(window.location.search);
+            const userId = params.get("id") || "defaultId";
+            const userPw = params.get("pw") || "defaultPw";
 
-            // if (!id || !pw) {
-            //     // 저장된 값 없으면 로그인 페이지로 보냄
-            //     window.location.href = "login.html";
-            // } else {
-            //     console.log("자동 로그인:", id, pw);
-            //     // 👉 여기서부터는 기존 동작 (MQTT 연결, UI 로드 등)
-            // }
+            // MQTT 토픽 구성
+            const SUB_TOPIC = `${userId}/${userPw}/sub`;
+            const PUB_TOPIC = `${userId}/${userPw}/pub`;
+
+            console.log("User ID:", userId);
+            console.log("User PW:", userPw);
+            console.log("SUB_TOPIC:", SUB_TOPIC);
+            console.log("PUB_TOPIC:", PUB_TOPIC);
         </script>
     </body>
 </html>
-
-
-
-
 
 

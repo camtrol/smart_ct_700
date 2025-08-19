@@ -15,8 +15,14 @@ const client = mqtt.connect(brokerUrl, {
 //     });
 // });
 
-const SUB_TOPIC = "스마트-V1.0-MH-001"; // ESP32가 publish 하는 토픽
-const PUB_TOPIC = "스마트-V1.0-MH-001-CMD"; // 브라우저가 ESP32로 보낼 토픽
+// const SUB_TOPIC = "스마트-V1.0-MH-001"; // ESP32가 publish 하는 토픽
+// const PUB_TOPIC = "스마트-V1.0-MH-001-CMD"; // 브라우저가 ESP32로 보낼 토픽
+
+const SUB_TOPIC = `${userId}/${userPw}/sub`; // 브라우저가 구독할 토픽
+const PUB_TOPIC = `${userId}/${userPw}/pub`; // 브라우저가 ESP32로 보낼 토픽
+
+console.log("SUB_TOPIC:", SUB_TOPIC);
+console.log("PUB_TOPIC:", PUB_TOPIC);
 
 client.on("connect", () => {
     console.log("MQTT Connected!");
