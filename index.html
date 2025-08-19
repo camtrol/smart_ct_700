@@ -6,15 +6,15 @@
         <title>CamTrol</title>
         <!-- <script src="https://cdn.tailwindcss.com"></script> -->
         <link
-            href="./style.css?v=20250819_184935"
+            href="./style.css?v=20250819_194211"
             rel="stylesheet"
-            onerror="this.href='./style.css?v=20250819_184935'"
+            onerror="this.href='./style.css?v=20250819_194211'"
         />
         <!-- <link rel="manifest" href="/manifest.json" /> -->
         <!-- 빈 favicon 추가 (옵션) -->
         <link rel="icon" href="data:," />
         <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
-        <script src="./script.js?v=20250819_184935?ver=1"></script>
+        <script src="./script.js?v=20250819_194211?ver=1"></script>
     </head>
 
     <body class="min-h-screen font-sans bg-gray-800">
@@ -308,7 +308,7 @@
                 </div>
             </div>
         </div>
-        <!-- <script src="./script.js?v=20250819_184935?ver=1"></script> -->
+        <!-- <script src="./script.js?v=20250819_194211?ver=1"></script> -->
         <script>
             if ("serviceWorker" in navigator) {
                 navigator.serviceWorker
@@ -322,8 +322,8 @@
             const userPw = params.get("pw") || "defaultPw";
 
             // MQTT 토픽 구성
-            const SUB_TOPIC = `${userId}/${userPw}/sub`;
-            const PUB_TOPIC = `${userId}/${userPw}/pub`;
+            const SUB_TOPIC = `${userId}/${userPw}/pub`;
+            const PUB_TOPIC = `${userId}/${userPw}/sub`;
 
             console.log("User ID:", userId);
             console.log("User PW:", userPw);
