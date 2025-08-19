@@ -4,15 +4,17 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>CamTrol</title>
-        <script src="https://cdn.tailwindcss.com"></script>
+        <!-- <script src="https://cdn.tailwindcss.com"></script> -->
         <link
-            href="./style.css?v=20250819_105439"
+            href="./style.css?v=20250819_170922"
             rel="stylesheet"
-            onerror="this.href='./style.css?v=20250819_105439'"
+            onerror="this.href='./style.css?v=20250819_170922'"
         />
+        <link rel="manifest" href="/manifest.json" />
         <!-- 빈 favicon 추가 (옵션) -->
         <link rel="icon" href="data:," />
         <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+        <script src="./script.js?v=20250819_170922?ver=1"></script>
     </head>
 
     <body class="min-h-screen font-sans bg-gray-800">
@@ -76,6 +78,7 @@
                     <!-- 청수 진행 바 -->
                     <div
                         role="progressbar"
+                        id="cleanBar"
                         aria-label="청수 인디케이터"
                         class="w-full bg-blue-500"
                         style="height: 50%"
@@ -95,13 +98,14 @@
                 >
                     <div
                         role="progressbar"
+                        id="wasteBar"
                         aria-label="오수 인디케이터"
                         class="w-full bg-[#9a6014ff]/50"
                         style="height: 40%"
                     ></div>
                     <!-- 중앙 고정 퍼센트 라벨 -->
                     <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
-                        <span class="text-xs text-black">40%</span>
+                        <span id="wasteVal" class="text-xs text-black">40%</span>
                     </div>
                 </div>
                 <!-- 아래 텍스트 레이블 -->
@@ -304,18 +308,22 @@
                 </div>
             </div>
         </div>
-        <script src="./script.js?v=20250819_105439?ver=1"></script>
+        <!-- <script src="./script.js?v=20250819_170922?ver=1"></script> -->
+        <script>
+            if ("serviceWorker" in navigator) {
+                navigator.serviceWorker
+                    .register("service-worker.js")
+                    .then((reg) => console.log("Service Worker 등록 성공", reg))
+                    .catch((err) => console.log("Service Worker 등록 실패", err));
+            }
+
+            // URL 파라미터 확인
+            const urlParams = new URLSearchParams(window.location.search);
+            const userId = urlParams.get("id");
+            const userPw = urlParams.get("pw");
+            console.log("사용자 ID:", userId, "PW:", userPw);
+        </script>
     </body>
 </html>
-
-
-
-
-
-
-
-
-
-
 
 

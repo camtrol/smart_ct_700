@@ -8,56 +8,69 @@ const client = mqtt.connect(brokerUrl, {
     reconnectPeriod: 2000,
 });
 
+// client.on("connect", () => {
+//     console.log("MQTT Connected!");
+//     client.subscribe("스마트-V1.0-MH-001", (err) => {
+//         if (!err) console.log("Subscribed to 스마트-V1.0-MH-001");
+//     });
+// });
+
+const SUB_TOPIC = "스마트-V1.0-MH-001"; // ESP32가 publish 하는 토픽
+const PUB_TOPIC = "스마트-V1.0-MH-001-CMD"; // 브라우저가 ESP32로 보낼 토픽
+
 client.on("connect", () => {
     console.log("MQTT Connected!");
-    client.subscribe("스마트-V1.0-MH-001", (err) => {
-        if (!err) console.log("Subscribed to 스마트-V1.0-MH-001");
+    client.subscribe(SUB_TOPIC, (err) => {
+        if (!err) console.log("Subscribed to", SUB_TOPIC);
     });
 });
 
 client.on("message", (topic, message) => {
-    console.log(`Received from ${topic}:`, message.toString());
-    try {
-        const data = JSON.parse(message.toString());
+    const msgStr = message.toString();
 
-        const batteryEl = document.querySelector("#battery_display span");
-        if (batteryEl) batteryEl.textContent = data.voltage.toFixed(1) + "V";
+    // 브라우저 → ESP32로 전달할 때만 publish
+    if (topic === SUB_TOPIC) {
+        console.log(`Received from ${topic}:`, msgStr);
 
-        const tempEl = document.getElementById("nowTemp");
-        if (tempEl) tempEl.textContent = data.temperature.toFixed(1) + "°C";
+        // ESP32 전용 토픽으로 publish
+        client.publish(PUB_TOPIC, msgStr);
 
-        const humiEl = document.getElementById("humidity");
-        if (humiEl) humiEl.textContent = data.humidity.toFixed(1) + "%";
+        // 브라우저 UI 업데이트 (예시)
+        try {
+            const data = JSON.parse(msgStr);
+            const voltageEl = document.querySelector("#battery_display span");
 
-        // const cleanValEl = document.getElementById("cleanVal");
-        // if (cleanValEl) cleanValEl.textContent = data.cleanWater + "%";
+            const cleanBar = document.getElementById("cleanBar");
+            const cleanText = document.getElementById("cleanVal");
+            const wasteBar = document.getElementById("wasteBar");
+            const wasteText = document.getElementById("wasteVal");
 
-        const cleanWaterBar = document.querySelector('[role="progressbar"][aria-label="청수 인디케이터"]');
-        const wasteWaterBar = document.querySelector('[role="progressbar"][aria-label="오수 인디케이터"]');
+            if (cleanBar) {
+                cleanBar.style.height = data.cleanWater + "%"; // bar 높이 변경
+            }
+            if (cleanText) {
+                cleanText.textContent = data.cleanWater + "%"; // 텍스트 변경
+            }
 
-        // 값이 0~100 사이라고 가정
-        let cleanWaterValue = data.cleanWater; // 예: 73
-        let wasteWaterValue = data.wasteWater; // 예: 73
+            if (wasteBar) {
+                wasteBar.style.height = data.wasteWater + "%"; // bar 높이 변경
+            }
+            if (wasteText) {
+                wasteText.textContent = data.wasteWater + "%"; // 텍스트 변경
+            }
 
-        if (cleanWaterBar) {
-            // 높이를 style.height로 변경
-            cleanWaterBar.style.height = cleanWaterValue + "%";
-            // 같이 퍼센트 라벨도 업데이트
-            const label = cleanWaterBar.nextElementSibling.querySelector("span");
-            if (label) label.textContent = cleanWaterValue + "%";
+            if (voltageEl) voltageEl.textContent = data.voltage.toFixed(2) + "V";
+
+            const tempEl = document.getElementById("nowTemp");
+            if (tempEl) tempEl.textContent = data.temperature.toFixed(1) + "°C";
+
+            const humiEl = document.getElementById("humidity");
+            if (humiEl) humiEl.textContent = data.humidity.toFixed(0) + "%";
+
+
+        } catch (err) {
+            console.error("JSON parse error:", err);
         }
-
-        if (wasteWaterBar) {
-            // 높이를 style.height로 변경
-            wasteWaterBar.style.height = wasteWaterValue + "%";
-            // 같이 퍼센트 라벨도 업데이트
-            const label = wasteWaterBar.nextElementSibling.querySelector("span");
-            if (label) label.textContent = wasteWaterValue + "%";
-        }
-
-        console.log("voltage:", data.voltage, "temperature:", data.temperature, "humidity:", data.humidity);
-    } catch (e) {
-        console.error("JSON parse error", e);
     }
 });
 
