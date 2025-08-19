@@ -1,16 +1,11 @@
-console.log("3. script.js 스마트 로드 완료!"); // 🔥 초기 로드 확인
+console.log("3. script.js 스마트 로드 완료!");
 
-const gateway = `ws://${window.location.hostname}/ws`;
-let websocket = null;
-let reconnectAttempts = 0;
-let currentTemp = 26.6;
-
+// ---------------- MQTT 설정 ----------------
 const brokerUrl = "wss://x9112e1f.ala.asia-southeast1.emqxsl.com:8084/mqtt";
-
 const client = mqtt.connect(brokerUrl, {
-    username: "camtrol", // 필요 시 EMQX 계정
+    username: "camtrol",
     password: "gustnr99**",
-    reconnectPeriod: 2000, // 재연결 주기 2초
+    reconnectPeriod: 2000,
 });
 
 client.on("connect", () => {
@@ -32,9 +27,11 @@ client.on("message", (topic, message) => {
 
 client.on("error", (err) => console.error("MQTT Error:", err));
 
-// --------------------------------------------------
-// [1] 웹소켓 관리
-// --------------------------------------------------
+// ---------------- WebSocket (필요 시) ----------------
+const gateway = `ws://${window.location.hostname}/ws`;
+let websocket = null;
+let reconnectAttempts = 0;
+
 function initWebSocket() {
     if (websocket) websocket.close();
 
@@ -59,16 +56,14 @@ function initWebSocket() {
         console.log("Received:", e.data);
         try {
             const data = JSON.parse(e.data);
-            processData(data); // 필요에 따라 구현
+            // 필요 시 처리
         } catch (err) {
             console.error("메시지 파싱 실패:", err);
         }
     };
 }
 
-// --------------------------------------------------
-// [2] 슬라이더 초기화
-// --------------------------------------------------
+// ---------------- 슬라이더 초기화 ----------------
 function setupSliders(count) {
     for (let i = 1; i <= count; i++) {
         const slider = document.getElementById(`slider${i}`);
@@ -89,9 +84,7 @@ function setupSliders(count) {
     }
 }
 
-// --------------------------------------------------
-// [3] 버튼 이벤트 초기화
-// --------------------------------------------------
+// ---------------- 버튼 이벤트 초기화 ----------------
 function initEventListeners() {
     const deviceMap = {
         heater_btn: "히터",
@@ -118,18 +111,15 @@ function initEventListeners() {
     Object.keys(deviceMap).forEach((buttonId) => {
         const btn = document.getElementById(buttonId);
         if (btn) {
-            btn.addEventListener("click", () => {
-                toggleDevice(buttonId, deviceMap[buttonId]);
-            });
+            btn.classList.remove("hidden"); // 보장
+            btn.classList.add("inline-block");
+            btn.addEventListener("click", () => toggleDevice(buttonId, deviceMap[buttonId]));
         }
     });
 }
 
-// --------------------------------------------------
-// [4] 장치 토글 함수
-// --------------------------------------------------
+// ---------------- 장치 토글 ----------------
 function toggleDevice(buttonId, deviceName) {
-    console.log(`${deviceName} 제어 실행`);
     const btn = document.getElementById(buttonId);
     if (!btn) return;
 
@@ -138,42 +128,12 @@ function toggleDevice(buttonId, deviceName) {
     btn.textContent = `${deviceName} ${isToggled ? "ON" : "OFF"}`;
 
     fetch(`/control?device=${deviceName}&state=${isToggled ? "on" : "off"}`)
-        .then((res) => {
-            if (!res.ok) throw new Error("HTTP error " + res.status);
-            return res.text();
-        })
+        .then((res) => (res.ok ? res.text() : Promise.reject("HTTP error " + res.status)))
         .then((data) => console.log(`${deviceName} 응답:`, data))
         .catch((err) => console.error(`${deviceName} 제어 실패:`, err));
 }
 
-// --------------------------------------------------
-// [5] 온도 표시 관련
-// --------------------------------------------------
-function updateTempDisplay() {
-    const el = document.getElementById("tempValue");
-    if (el) el.textContent = currentTemp.toFixed(1) + " °C";
-
-    const setTempEl = document.getElementById("setTemp");
-    if (setTempEl) {
-        setTempEl.classList.add("text-yellow-500");
-        setTimeout(() => {
-            setTempEl.textContent = currentTemp.toFixed(1) + " °C";
-            setTempEl.classList.remove("text-yellow-500");
-        }, 300);
-    }
-}
-
-function setTemp() {
-    const overlay = document.getElementById("tempModalOverlay");
-    if (!overlay) return;
-    overlay.classList.remove("hidden");
-    overlay.classList.add("flex");
-    updateTempDisplay();
-}
-
-// --------------------------------------------------
-// [6] DOM 준비 후 모든 초기화
-// --------------------------------------------------
+// ---------------- 초기화 ----------------
 window.addEventListener("DOMContentLoaded", () => {
     initEventListeners();
     setupSliders(12);

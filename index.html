@@ -1,313 +1,59 @@
 ﻿<!DOCTYPE html>
 <html lang="ko">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>CamTrol</title>
-        <script src="https://cdn.tailwindcss.com"></script>
-        <link
-            href="./style.css?v=20250819_093348"
-            rel="stylesheet"
-            onerror="this.href='./style.css?v=20250819_093348'"
-        />
-        <!-- 빈 favicon 추가 (옵션) -->
-        <link rel="icon" href="data:," />
-        <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
-    </head>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CamTrol</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="./style.css?v=20250819_094701" rel="stylesheet" />
+    <link rel="icon" href="data:," />
+    <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+</head>
+<body class="min-h-screen font-sans bg-gray-800">
 
-    <body class="min-h-screen font-sans bg-gray-800">
-        <!-- 상단 네비 -->
-        <div class="relative flex items-center justify-between p-2 m-1 bg-gray-800 rounded-lg h-fit">
-            <div class="flex space-x-2">
-                <img class="inline-block w-8 h-5 mt-1 ml-2" src="Camper.png" alt="캠핑카" />
-                <div class="pl-4 font-sans text-base italic font-semibold text-white">스마트 모빌</div>
-            </div>
-            <div class="flex space-x-4">
-                <button id="bed_icon">
-                    <img
-                        onclick="allLedClick()"
-                        id="bed_img"
-                        class="object-cover w-6 h-6 mx-auto aspect-square"
-                        src="All_OFF.png"
-                        alt="전체등"
-                    />
-                </button>
-                <button>
-                    <img class="object-cover w-6 h-6 mx-auto mr-2 aspect-square" src="wifi.png" alt="wifi" />
-                </button>
-            </div>
-        </div>
-        <!-- 간격 띄우기 -->
-        <div class="space-y-1"></div>
-        <!-- 메인 컨텐츠 -->
-        <div
-            class="flex justify-evenly items-center bg-gray-800 rounded-lg p-1 m-1 shadow-[1px_1px_1px_#1a1a1a,-1px_-1px_1px_#3c3c3c] border border-gray-500"
-        >
-            <!-- 첫 줄 버튼들 -->
-            <div id="battery_display" class="inline-flex flex-col items-center cursor-pointer">
-                <img
-                    src="Battery.svg"
-                    alt="배터리"
-                    class="object-contain mb-1"
-                    width="50"
-                    height="20"
-                    style="color: red"
-                />
-                <span class="text-lg text-white">12.2V</span>
-            </div>
-            <div
-                id="temp_display"
-                class="inline-flex flex-col items-center cursor-pointer control-btn"
-                onclick="setTemp()"
-            >
-                <img src="Temp.png" alt="온도" class="object-contain mb-1" width="50" height="20" />
-                <span class="text-lg text-white">26.6 °C</span>
-                <span id="setTemp" class="text-lg text-red-500">26.6 °C</span>
-            </div>
-            <div id="humi_display" class="inline-flex flex-col items-center cursor-pointer">
-                <img src="Humi.png" alt="습도" class="object-contain mb-1" width="50" height="20" />
-                <span class="text-lg text-white">52.6 %</span>
-            </div>
-            <div class="flex flex-col items-center">
-                <!-- 수직 인디케이터 바 -->
-                <div
-                    class="indicator-bg relative flex flex-col justify-end w-8 h-20 overflow-hidden bg-gray-200 rounded-[5px]"
-                >
-                    <!-- 청수 진행 바 -->
-                    <div
-                        role="progressbar"
-                        aria-label="청수 인디케이터"
-                        class="w-full bg-blue-500"
-                        style="height: 20%"
-                    ></div>
-                    <!-- 중앙 고정 퍼센트 라벨 -->
-                    <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
-                        <span class="text-xs text-black">100%</span>
-                    </div>
-                </div>
-                <!-- 아래 텍스트 레이블 -->
-                <span class="mt-1 text-sm text-white">청수</span>
-            </div>
-            <div class="flex flex-col items-center">
-                <!-- 수직 인디케이터 바 -->
-                <div
-                    class="indicator-bg relative flex flex-col justify-end w-8 h-20 overflow-hidden bg-gray-200 rounded-[5px]"
-                >
-                    <div
-                        role="progressbar"
-                        aria-label="오수 인디케이터"
-                        class="w-full bg-[#9a6014ff]/50"
-                        style="height: 40%"
-                    ></div>
-                    <!-- 중앙 고정 퍼센트 라벨 -->
-                    <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
-                        <span class="text-xs text-black">40%</span>
-                    </div>
-                </div>
-                <!-- 아래 텍스트 레이블 -->
-                <span class="mt-1 text-sm text-white">오수</span>
-            </div>
-        </div>
-        <!-- 간격 띄우기 -->
-        <div class="space-y-2"></div>
+<!-- 상단 네비 -->
+<div class="relative flex items-center justify-between p-2 m-1 bg-gray-800 rounded-lg h-fit">
+    <div class="flex space-x-2">
+        <img class="inline-block w-8 h-5 mt-1 ml-2" src="Camper.png" alt="캠핑카" />
+        <div class="pl-4 font-sans text-base italic font-semibold text-white">스마트 모빌</div>
+    </div>
+    <div class="flex space-x-4">
+        <button id="bed_icon">
+            <img id="bed_img" class="object-cover w-6 h-6 mx-auto aspect-square" src="All_OFF.png" alt="전체등" />
+        </button>
+        <button>
+            <img class="object-cover w-6 h-6 mx-auto mr-2 aspect-square" src="wifi.png" alt="wifi" />
+        </button>
+    </div>
+</div>
 
-        <!-- 슬라이더 그룹 -->
-        <div
-            class="flex flex-col justify-between items-stretch bg-gray-800 rounded-lg p-1 m-1 shadow-[1px_1px_1px_#1a1a1a,-1px_-1px_1px_#3c3c3c] border border-gray-500"
-        >
-            <!-- 각 슬라이더 -->
-            <div class="relative flex items-center h-16 px-1">
-                <span class="absolute text-sm text-white left-3 w-[30px] text-right" id="sliderValue10">100</span>
-                <input type="range" id="slider10" min="1" max="100" step="1" value="100" class="my-slider" />
-                <input
-                    type="button"
-                    class="absolute px-4 py-2 text-sm control-btn btn right-1"
-                    value="히 터"
-                    id="heater_btn"
-                />
-            </div>
+<div class="space-y-2"></div>
 
-            <!-- 아래부터 반복 패턴 -->
-            <div class="relative flex items-center h-16 px-1">
-                <span class="absolute text-sm text-white left-3 w-[30px] text-right" id="sliderValue11">100</span>
-                <input type="range" id="slider11" min="1" max="100" step="1" value="100" class="my-slider" />
-                <input
-                    type="button"
-                    value="거 실"
-                    class="absolute px-4 py-2 text-sm control-btn btn right-1"
-                    id="living_btn"
-                />
-            </div>
-            <div class="relative flex items-center h-16">
-                <span class="absolute text-sm text-white left-3 w-[30px] text-right" id="sliderValue12">100</span>
-                <input type="range" id="slider12" min="1" max="100" step="1" value="100" class="my-slider" />
-                <input
-                    type="button"
-                    value="벙 커"
-                    class="absolute px-4 py-2 text-sm control-btn btn right-1"
-                    id="bunker_btn"
-                />
-            </div>
-        </div>
+<!-- 슬라이더 그룹 예시 -->
+<div class="flex flex-col justify-between items-stretch bg-gray-800 rounded-lg p-1 m-1 shadow-md border border-gray-500">
+    <!-- slider + 버튼 패턴 반복 -->
+    <div class="relative flex items-center h-16 px-1" id="sliderWrapper1">
+        <span class="absolute text-sm text-white left-3 w-[30px] text-right" id="sliderValue1">50</span>
+        <input type="range" id="slider1" min="1" max="100" step="1" value="100" class="my-slider flex-1" />
+        <input type="button" value="침실등" class="absolute px-4 py-2 text-sm control-btn btn right-1" id="bed_btn" />
+    </div>
+    <!-- 필요 시 slider2~slider12도 같은 패턴으로 추가 -->
+</div>
 
-        <!-- 나머지 slider3~8도 동일한 패턴으로 추가 -->
-        <!-- 필요 시 그대로 복붙 후 id/label만 바꿔 -->
-        <!-- 간격 띄우기 -->
-        <div class="space-y-1"></div>
-        <!-- 메인 컨텐츠 -->
-        <div
-            class="flex justify-between items-center bg-gray-800 rounded-lg p-1 m-1 shadow-[1px_1px_1px_#1a1a1a,-1px_-1px_1px_#3c3c3c] border border-gray-500"
-        >
-            <!-- 첫 줄 버튼들 -->
-            <input type="button" value="보일러" class="text-sm control-btn btn" id="boiler_btn" />
-            <input type="button" value="인버터" class="text-sm control-btn btn" id="inverter_btn" />
-            <input type="button" value="청수퇴수" class="text-sm control-btn btn" id="clean_btn" />
-            <input type="button" value="오수퇴수" class="text-sm control-btn btn" id="waste_btn" />
-        </div>
+<!-- 버튼 그룹 예시 -->
+<div class="flex flex-row justify-between items-center bg-gray-800 rounded-lg p-1 m-1 shadow-md border border-gray-500">
+    <input type="button" value="보일러" class="text-sm control-btn btn" id="boiler_btn" />
+    <input type="button" value="인버터" class="text-sm control-btn btn" id="inverter_btn" />
+    <input type="button" value="청수퇴수" class="text-sm control-btn btn" id="clean_btn" />
+    <input type="button" value="오수퇴수" class="text-sm control-btn btn" id="waste_btn" />
+</div>
 
-        <!-- 간격 띄우기 -->
-        <div class="space-y-2"></div>
+<div class="p-4 mb-4 text-[12px] text-yellow-400">
+    ⚠️ 이 프로그램은 <strong>Google Chrome</strong> 브라우저에 최적화되었습니다.
+</div>
 
-        <!-- 슬라이더 그룹 -->
-        <div
-            class="flex flex-col justify-between items-stretch bg-gray-800 rounded-lg p-1 m-1 shadow-[1px_1px_1px_#1a1a1a,-1px_-1px_1px_#3c3c3c] border border-gray-500"
-        >
-            <!-- 각 슬라이더 -->
-            <div class="relative flex items-center h-16">
-                <span class="absolute text-sm text-white left-3 w-[30px] text-right" id="sliderValue1">50</span>
-                <input type="range" id="slider1" min="1" max="100" step="1" value="100" class="my-slider" />
-                <input
-                    type="button"
-                    value="침실등"
-                    class="absolute px-4 py-2 text-sm control-btn btn right-1"
-                    id="bed_btn"
-                />
-            </div>
-
-            <div class="relative flex items-center h-16">
-                <span class="absolute text-sm text-white left-3 w-[30px] text-right" id="sliderValue2">5</span>
-                <input type="range" id="slider2" min="1" max="100" step="1" value="100" class="my-slider" />
-                <input
-                    type="button"
-                    value="거실등"
-                    class="absolute px-4 py-2 text-sm control-btn btn right-1"
-                    id="living_room_btn"
-                />
-            </div>
-
-            <div class="relative flex items-center h-16">
-                <span class="absolute text-sm text-white left-3 w-[30px] text-right" id="sliderValue3">5</span>
-                <input type="range" id="slider3" min="1" max="100" step="1" value="100" class="my-slider" />
-                <input
-                    type="button"
-                    value="거실간접"
-                    class="absolute px-4 py-2 text-sm control-btn btn right-1"
-                    id="living_1_btn"
-                />
-            </div>
-
-            <div class="relative flex items-center h-16">
-                <span class="absolute text-sm text-white left-3 w-[30px] text-right" id="sliderValue4">5</span>
-                <input type="range" id="slider4" min="1" max="100" step="1" value="100" class="my-slider" />
-                <input
-                    type="button"
-                    value="벽간접"
-                    class="absolute px-4 py-2 text-sm control-btn btn right-1"
-                    id="living_2_btn"
-                />
-            </div>
-
-            <div class="relative flex items-center h-16">
-                <span class="absolute text-sm text-white left-3 w-[30px] text-right" id="sliderValue5">5</span>
-                <input type="range" id="slider5" min="1" max="100" step="1" value="100" class="my-slider" />
-                <input
-                    type="button"
-                    value="언더등"
-                    class="absolute px-4 py-2 text-sm control-btn btn right-1"
-                    id="under_btn"
-                />
-            </div>
-
-            <div class="relative flex items-center h-16">
-                <span class="absolute text-sm text-white left-3 w-[30px] text-right" id="sliderValue6">5</span>
-                <input type="range" id="slider6" min="1" max="100" step="1" value="100" class="my-slider" />
-                <input
-                    type="button"
-                    value="출입등"
-                    class="absolute px-4 py-2 text-sm control-btn btn right-1"
-                    id="entrance_btn"
-                />
-            </div>
-
-            <div class="relative flex items-center h-16">
-                <span class="absolute text-sm text-white left-3 w-[30px] text-right" id="sliderValue7">5</span>
-                <input type="range" id="slider7" min="1" max="100" step="1" value="100" class="my-slider" />
-                <input
-                    type="button"
-                    value="주방등"
-                    class="absolute px-4 py-2 text-sm control-btn btn right-1"
-                    id="kitchen_btn"
-                />
-            </div>
-
-            <div class="relative flex items-center h-16">
-                <span class="absolute text-sm text-white left-3 w-[30px] text-right" id="sliderValue8">5</span>
-                <input type="range" id="slider8" min="1" max="100" step="1" value="100" class="my-slider" />
-                <input
-                    type="button"
-                    value="욕실등"
-                    class="absolute px-4 py-2 text-sm control-btn btn right-1"
-                    id="bathroom_btn"
-                />
-            </div>
-
-            <div class="relative flex items-center h-16">
-                <span class="absolute text-sm text-white left-3 w-[30px] text-right" id="sliderValue9">5</span>
-                <input type="range" id="slider9" min="1" max="100" step="1" value="100" class="my-slider" />
-                <input
-                    type="button"
-                    value="외부등"
-                    class="absolute px-4 py-2 text-sm control-btn btn right-1"
-                    id="external_btn"
-                />
-            </div>
-
-            <!-- 나머지 slider3~8도 동일한 패턴으로 추가 -->
-            <!-- 필요 시 그대로 복붙 후 id/label만 바꿔 -->
-        </div>
-        <!-- 메인 컨텐츠 -->
-        <div
-            class="flex flex-row justify-between items-center bg-gray-800 rounded-lg p-1 m-1 shadow-[1px_1px_1px_#1a1a1a,-1px_-1px_1px_#3c3c3c] border border-gray-500"
-        >
-            <input type="button" value="물펌프" class="px-4 py-2 text-sm control-btn btn right-1" id="pump_btn" />
-            <input type="button" value="FAN" class="px-4 py-2 text-sm control-btn btn right-1" id="fan_btn" />
-            <input type="button" value="냉장고" class="px-4 py-2 text-sm control-btn btn right-1" id="fridge_btn" />
-        </div>
-
-        <div class="p-4 mb-4 text-[12px] text-yellow-400">
-            ⚠️ 이 프로그램은 <strong>Google Chrome</strong> 브라우저에 최적화되었습니다. 다른 브라우저에서는 디자인이
-            다르게 보일 수 있습니다. ⚠️
-        </div>
-
-        <!-- 모달 오버레이 -->
-        <div id="tempModalOverlay" class="fixed inset-0 z-50 items-center justify-center hidden bg-black bg-opacity-50">
-            <!-- 모달 박스 -->
-            <div class="w-64 max-w-xs p-4 text-white bg-gray-700 rounded-lg">
-                <h3 class="mb-2 text-lg font-semibold">온도 설정</h3>
-                <div class="mb-4 font-mono text-2xl text-center" id="tempValue">26.6 °C</div>
-                <div class="flex justify-center mb-4 space-x-4">
-                    <button onclick="changeTemp(0.5)" class="px-3 py-1 bg-blue-500 rounded">UP</button>
-                    <button onclick="changeTemp(-0.5)" class="px-3 py-1 bg-blue-500 rounded">DOWN</button>
-                </div>
-                <div class="text-center">
-                    <button onclick="closeTempModal()" class="px-4 py-2 bg-green-500 rounded">완료</button>
-                </div>
-            </div>
-        </div>
-        <script src="./script.js?v=20250819_093348?ver=1"></script>
-    </body>
+<script src="./script.js?v=20250819_094701"></script>
+</body>
 </html>
-
-
 
 
