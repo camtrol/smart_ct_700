@@ -23,7 +23,7 @@ client.on("message", (topic, message) => {
         const batteryEl = document.querySelector("#battery_display span");
         if (batteryEl) batteryEl.textContent = data.voltage.toFixed(1) + "V";
 
-        const tempEl = document.querySelector("#nowTemp span");
+        const tempEl = document.querySelector("nowTemp");
         if (tempEl) tempEl.textContent = data.temperature.toFixed(1) + "°C";
 
         console.log("voltage:", data.voltage, "temperature:", data.temperature, "humidity:", data.humidity);
