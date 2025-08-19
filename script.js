@@ -19,8 +19,13 @@ client.on("message", (topic, message) => {
     console.log(`Received from ${topic}:`, message.toString());
     try {
         const data = JSON.parse(message.toString());
+
         const batteryEl = document.querySelector("#battery_display span");
         if (batteryEl) batteryEl.textContent = data.voltage.toFixed(1) + "V";
+        
+        const tempEl = document.querySelector("#nowTemp span");
+        if (tempEl) tempEl.textContent = data.temperature.toFixed(1) + "V";
+
         console.log("voltage:", data.voltage, "temperature:", data.temperature, "humidity:", data.humidity);
     } catch (e) {
         console.error("JSON parse error", e);

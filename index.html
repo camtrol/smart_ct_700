@@ -6,9 +6,9 @@
         <title>CamTrol</title>
         <script src="https://cdn.tailwindcss.com"></script>
         <link
-            href="./style.css?v=20250819_102115"
+            href="./style.css?v=20250819_102654"
             rel="stylesheet"
-            onerror="this.href='./style.css?v=20250819_102115'"
+            onerror="this.href='./style.css?v=20250819_102654'"
         />
         <!-- 빈 favicon 추가 (옵션) -->
         <link rel="icon" href="data:," />
@@ -61,7 +61,7 @@
                 onclick="setTemp()"
             >
                 <img src="Temp.png" alt="온도" class="object-contain mb-1" width="50" height="20" />
-                <span class="text-lg text-white">26.6 °C</span>
+                <span id="nowTemp" class="text-lg text-white">26.6 °C</span>
                 <span id="setTemp" class="text-lg text-red-500">26.6 °C</span>
             </div>
             <div id="humi_display" class="inline-flex flex-col items-center cursor-pointer">
@@ -304,12 +304,8 @@
                 </div>
             </div>
         </div>
-        <script src="./script.js?v=20250819_102115?ver=1"></script>
+        <script src="./script.js?v=20250819_102654?ver=1"></script>
     </body>
 </html>
-
-
-
-
 
 
