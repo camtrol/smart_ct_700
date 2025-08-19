@@ -1,6 +1,6 @@
 {
     "name": "CamTrol Smart Controller",
-    "short_name": "CamTrol",
+    "short_name": "CamTrol-1",
     "start_url": "./index.html?id=스마트-V1.0-MH-001&pw=19250819001",
     "display": "standalone",
     "background_color": "#1a1a1a",
