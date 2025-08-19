@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>로그인</title>
+    </head>
+    <body>
+        <h1>로그인</h1>
+        <input type="text" id="id" placeholder="ID 입력" />
+        <input type="password" id="pw" placeholder="PW 입력" />
+        <button id="loginBtn">로그인</button>
+
+        <script>
+            document.getElementById("loginBtn").addEventListener("click", () => {
+                const id = document.getElementById("id").value;
+                const pw = document.getElementById("pw").value;
+
+                if (!id || !pw) {
+                    alert("ID와 PW를 입력하세요!");
+                    return;
+                }
+
+                // ✅ 세션에만 저장 → 브라우저 닫으면 자동 삭제
+                sessionStorage.setItem("userId", id);
+                sessionStorage.setItem("userPw", pw);
+
+                // index.html로 이동
+                window.location.href = "index.html";
+            });
+        </script>
+    </body>
+</html>

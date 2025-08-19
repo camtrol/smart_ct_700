@@ -6,15 +6,23 @@
         <title>CamTrol</title>
         <!-- <script src="https://cdn.tailwindcss.com"></script> -->
         <link
-            href="./style.css?v=20250819_170922"
+            href="./style.css?v=20250819_174426"
             rel="stylesheet"
-            onerror="this.href='./style.css?v=20250819_170922'"
+            onerror="this.href='./style.css?v=20250819_174426'"
         />
         <link rel="manifest" href="/manifest.json" />
         <!-- 빈 favicon 추가 (옵션) -->
         <link rel="icon" href="data:," />
         <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
-        <script src="./script.js?v=20250819_170922?ver=1"></script>
+        <script src="./script.js?v=20250819_174426?ver=1"></script>
+        <script>
+            const id = sessionStorage.getItem("userId");
+            const pw = sessionStorage.getItem("userPw");
+
+            if (!id || !pw) {
+                window.location.href = "login.html";
+            }
+        </script>
     </head>
 
     <body class="min-h-screen font-sans bg-gray-800">
@@ -308,20 +316,26 @@
                 </div>
             </div>
         </div>
-        <!-- <script src="./script.js?v=20250819_170922?ver=1"></script> -->
+        <!-- <script src="./script.js?v=20250819_174426?ver=1"></script> -->
         <script>
             if ("serviceWorker" in navigator) {
                 navigator.serviceWorker
-                    .register("service-worker.js")
-                    .then((reg) => console.log("Service Worker 등록 성공", reg))
-                    .catch((err) => console.log("Service Worker 등록 실패", err));
+                    .register("/service-worker.js")
+                    .then((reg) => console.log("Service Worker 등록 성공:", reg))
+                    .catch((err) => console.log("Service Worker 등록 실패:", err));
             }
 
-            // URL 파라미터 확인
-            const urlParams = new URLSearchParams(window.location.search);
-            const userId = urlParams.get("id");
-            const userPw = urlParams.get("pw");
-            console.log("사용자 ID:", userId, "PW:", userPw);
+            // // localStorage에서 ID/PW 확인
+            // const id = localStorage.getItem("userId");
+            // const pw = localStorage.getItem("userPw");
+
+            // if (!id || !pw) {
+            //     // 저장된 값 없으면 로그인 페이지로 보냄
+            //     window.location.href = "login.html";
+            // } else {
+            //     console.log("자동 로그인:", id, pw);
+            //     // 👉 여기서부터는 기존 동작 (MQTT 연결, UI 로드 등)
+            // }
         </script>
     </body>
 </html>
