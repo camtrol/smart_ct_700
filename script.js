@@ -29,8 +29,31 @@ client.on("message", (topic, message) => {
         const humiEl = document.getElementById("humidity");
         if (humiEl) humiEl.textContent = data.humidity.toFixed(1) + "%";
 
-        const cleanValEl = document.getElementById("cleanVal");
-        if (cleanValEl) cleanValEl.textContent = data.cleanWater;
+        // const cleanValEl = document.getElementById("cleanVal");
+        // if (cleanValEl) cleanValEl.textContent = data.cleanWater + "%";
+
+        const cleanWaterBar = document.querySelector('[role="progressbar"][aria-label="청수 인디케이터"]');
+        const wasteWaterBar = document.querySelector('[role="progressbar"][aria-label="오수 인디케이터"]');
+
+        // 값이 0~100 사이라고 가정
+        let cleanWaterValue = data.cleanWater; // 예: 73
+        let wasteWaterValue = data.wasteWater; // 예: 73
+
+        if (cleanWaterBar) {
+            // 높이를 style.height로 변경
+            cleanWaterBar.style.height = cleanWaterValue + "%";
+            // 같이 퍼센트 라벨도 업데이트
+            const label = cleanWaterBar.nextElementSibling.querySelector("span");
+            if (label) label.textContent = cleanWaterValue + "%";
+        }
+
+        if (wasteWaterBar) {
+            // 높이를 style.height로 변경
+            wasteWaterBar.style.height = wasteWaterValue + "%";
+            // 같이 퍼센트 라벨도 업데이트
+            const label = wasteWaterBar.nextElementSibling.querySelector("span");
+            if (label) label.textContent = wasteWaterValue + "%";
+        }
 
         console.log("voltage:", data.voltage, "temperature:", data.temperature, "humidity:", data.humidity);
     } catch (e) {
