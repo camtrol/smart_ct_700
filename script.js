@@ -5,6 +5,33 @@ let websocket = null;
 let reconnectAttempts = 0;
 let currentTemp = 26.6;
 
+const brokerUrl = "wss://x9112e1f.ala.asia-southeast1.emqxsl.com:8084/mqtt";
+
+const client = mqtt.connect(brokerUrl, {
+    username: "YOUR_USERNAME", // 필요 시 EMQX 계정
+    password: "YOUR_PASSWORD",
+    reconnectPeriod: 2000, // 재연결 주기 2초
+});
+
+client.on("connect", () => {
+    console.log("MQTT Connected!");
+    client.subscribe("스마트-V1.0-MH-001", (err) => {
+        if (!err) console.log("Subscribed to 스마트-V1.0-MH-001");
+    });
+});
+
+client.on("message", (topic, message) => {
+    console.log(`Received from ${topic}:`, message.toString());
+    try {
+        const data = JSON.parse(message.toString());
+        console.log("voltage:", data.voltage, "temperature:", data.temperature, "humidity:", data.humidity);
+    } catch (e) {
+        console.error("JSON parse error", e);
+    }
+});
+
+client.on("error", (err) => console.error("MQTT Error:", err));
+
 // --------------------------------------------------
 // [1] 웹소켓 관리
 // --------------------------------------------------
