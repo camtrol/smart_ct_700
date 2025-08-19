@@ -8,8 +8,8 @@ let currentTemp = 26.6;
 const brokerUrl = "wss://x9112e1f.ala.asia-southeast1.emqxsl.com:8084/mqtt";
 
 const client = mqtt.connect(brokerUrl, {
-    username: "YOUR_USERNAME", // 필요 시 EMQX 계정
-    password: "YOUR_PASSWORD",
+    username: "camtrol", // 필요 시 EMQX 계정
+    password: "gustnr99**",
     reconnectPeriod: 2000, // 재연결 주기 2초
 });
 
